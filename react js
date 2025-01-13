@@ -1,0 +1,107 @@
+import React, { useState } from 'react';
+
+const PasswordGenerator = () => {
+  const [password, setPassword] = useState('');
+  const [length, setLength] = useState(12);
+  const [includeNumbers, setIncludeNumbers] = useState(true);
+  const [includeSymbols, setIncludeSymbols] = useState(true);
+  const [includeUppercase, setIncludeUppercase] = useState(true);
+
+  const generatePassword = () => {
+    const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+    const numbers = '0123456789';
+    const symbols = '!@#$%^&*()_+[]{}|;:,.<>?';
+    const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    let charSet = lowercaseChars;
+    if (includeNumbers) charSet += numbers;
+    if (includeSymbols) charSet += symbols;
+    if (includeUppercase) charSet += uppercaseChars;
+
+    let generatedPassword = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charSet.length);
+      generatedPassword += charSet[randomIndex];
+    }
+
+    setPassword(generatedPassword);
+  };
+
+  return (
+    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <h1>Random Password Generator</h1>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label>Password Length: </label>
+        <input
+          type="number"
+          value={length}
+          min="6"
+          max="20"
+          onChange={(e) => setLength(Number(e.target.value))}
+          style={{ padding: '5px', width: '60px' }}
+        />
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          <input
+            type="checkbox"
+            checked={includeNumbers}
+            onChange={() => setIncludeNumbers(!includeNumbers)}
+          />
+          Include Numbers
+        </label>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            checked={includeSymbols}
+            onChange={() => setIncludeSymbols(!includeSymbols)}
+          />
+          Include Symbols
+        </label>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            checked={includeUppercase}
+            onChange={() => setIncludeUppercase(!includeUppercase)}
+          />
+          Include Uppercase Letters
+        </label>
+      </div>
+
+      <button
+        onClick={generatePassword}
+        style={{
+          padding: '10px 20px',
+          backgroundColor: '#4caf50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+        }}
+      >
+        Generate Password
+      </button>
+
+      {password && (
+        <div style={{ marginTop: '20px' }}>
+          <h3>Generated Password:</h3>
+          <p
+            style={{
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              wordBreak: 'break-all',
+            }}
+          >
+            {password}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PasswordGenerator;
